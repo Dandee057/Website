@@ -135,11 +135,20 @@ h1{ font-size:clamp(28px, 4vw, 46px); line-height:1.15; margin:.35em 0 .5em }
 .card-body{ padding:var(--pad) }
 .card-body h3{ margin:0 0 6px; font-size:18px }
 .pills{ display:flex; gap:8px; margin-top:10px; flex-wrap:wrap }
-.pills span{
-  font-size:12px; color:var(--muted);
-  border:1px solid color-mix(in srgb, var(--muted) 25%, transparent);
-  border-radius:999px; padding:.18rem .5rem;
+.pills span {
+  display: flex;
+  flex-direction: column;         /* stack icon above text */
+  align-items: center;            /* center horizontally */
+  justify-content: center;
+  font-size: 12px;
+  color: var(--muted);
+  border: 1px solid color-mix(in srgb, var(--muted) 25%, transparent);
+  border-radius: 12px;
+  padding: 10px;
+  width: 125px;                   /* equal width boxes */
+  background: color-mix(in srgb, var(--surface) 70%, transparent);
 }
+
 .more{ margin-top:14px }
 
 /* About */
@@ -211,14 +220,16 @@ footer{ border-top:1px solid color-mix(in srgb, var(--muted) 25%, transparent); 
   .nav { background: color-mix(in srgb, var(--bg) 90%, transparent); }
 }
 
-/* Tiny skill icons */
 .skill-ico {
   width: 64px;
   height: 64px;
-  display: inline-block;
-  vertical-align: middle;
-  margin-right: 6px;
-  object-fit: contain; /* keeps aspect ratio inside the box */
+  display: block;                 /* stack above text */
+  margin: 0 auto 6px auto;        /* center horizontally + add spacing below */
+  object-fit: contain;            /* keep aspect ratio */
+  background: var(--surface);     /* subtle background circle */
+  border-radius: 12px;            /* soften edges */
+  padding: 6px;                   /* breathing room inside */
   filter: drop-shadow(0 0 4px color-mix(in srgb, var(--brand) 30%, transparent));
 }
+
 

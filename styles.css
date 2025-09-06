@@ -1,0 +1,218 @@
+/* =======================
+  styles.css (Daniel Dennison – Portfolio)
+  Palette preserved; quirky retro UI.
+======================= */
+:root{
+  --bg:#0b1016; --surface:#111826; --text:#e6edf3; --muted:#9db2c6;
+  --brand:#6ee7ff; --brand-2:#a78bfa;
+  --radius:16px; --pad:18px; --max:1120px;
+  --shadow:0 6px 30px rgba(0,0,0,.25);
+}
+@media (prefers-color-scheme: light){
+  :root{ --bg:#f8fafc; --surface:#ffffff; --text:#0b1220; --muted:#475569; --brand:#0369a1; --brand-2:#7c3aed; }
+}
+
+/* Base */
+*{ box-sizing:border-box }
+html,body{ height:100% }
+body{
+  margin:0;
+  font:16px/1.6 Inter, system-ui, Segoe UI, Roboto, Arial, sans-serif;
+  color:var(--text);
+  background:
+    radial-gradient(1200px 800px at 100% -10%, rgba(167,139,250,.18), transparent 60%),
+    radial-gradient(900px 600px at -10% 10%, rgba(110,231,255,.18), transparent 55%),
+    var(--bg);
+}
+a{ color:inherit; text-decoration:none }
+img{ max-width:100%; display:block }
+.container{ width:min(100%, var(--max)); margin:auto; padding:0 20px }
+
+/* Tabs / Nav */
+.nav{
+  position:sticky; top:0; z-index:50; backdrop-filter:saturate(140%) blur(8px);
+  background:color-mix(in srgb, var(--bg) 85%, transparent);
+  border-bottom:1px solid color-mix(in srgb, var(--muted) 25%, transparent);
+}
+.nav-inner{ display:flex; align-items:center; gap:16px; padding:10px 0 }
+.brand{ display:flex; align-items:center; gap:10px; font-weight:800; letter-spacing:.3px; text-transform:uppercase }
+.brand-text{ font-family:"Press Start 2P", system-ui; font-size:12px }
+.pixel{
+  width:14px; height:14px; image-rendering:pixelated;
+  background:linear-gradient(45deg,var(--brand),var(--brand-2));
+  box-shadow:0 0 12px color-mix(in srgb, var(--brand) 40%, var(--brand-2) 40%);
+}
+.tabbar{ display:flex; gap:8px; margin-left:auto }
+.tab{
+  position:relative; padding:10px 14px; border-radius:12px 12px 0 0;
+  background:color-mix(in srgb, var(--surface) 60%, transparent);
+  border:1px solid color-mix(in srgb, var(--muted) 25%, transparent);
+  border-bottom:none; color:var(--text); font-weight:600;
+}
+.tab:is(:hover,:focus){ transform:translateY(-2px) }
+.tab.is-active{ background:linear-gradient(45deg,var(--brand),var(--brand-2)); color:#0b1220 }
+
+/* Background greebles */
+.bg-grid{
+  position:fixed; inset:0; pointer-events:none; opacity:.08;
+  background-image:
+    linear-gradient(to right, color-mix(in srgb, var(--muted) 18%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in srgb, var(--muted) 18%, transparent) 1px, transparent 1px);
+  background-size:24px 24px;
+}
+.bg-sparkles{
+  position:fixed; inset:0; pointer-events:none; mix-blend-mode:screen; opacity:.25;
+  background-image:
+    radial-gradient(2px 2px at 20% 30%, var(--brand), transparent 60%),
+    radial-gradient(2px 2px at 80% 40%, var(--brand-2), transparent 60%),
+    radial-gradient(2px 2px at 60% 80%, var(--brand), transparent 60%);
+  animation: twinkle 6s linear infinite;
+}
+@keyframes twinkle{ 0%,100%{ opacity:.15 } 50%{ opacity:.35 } }
+
+/* Sections behave like tabs by default */
+.section{ display:none; padding:56px 0 }
+.section.is-active{ display:block }
+.section-head h2{ font-family:"Press Start 2P", system-ui; font-size:18px; margin:0 0 8px }
+.meta{ color:var(--muted); font-size:14px }
+
+/* Hero */
+.hero-grid{ display:grid; grid-template-columns:1.2fr .8fr; gap:28px; padding:56px 0 12px }
+.kicker{ color:var(--muted); text-transform:uppercase; letter-spacing:.18em; font-size:12px }
+h1{ font-size:clamp(28px, 4vw, 46px); line-height:1.15; margin:.35em 0 .5em }
+.name{ background:linear-gradient(45deg,var(--brand),var(--brand-2)); -webkit-background-clip:text; background-clip:text; color:transparent }
+.lead{ color:var(--muted) }
+.cta{ display:flex; gap:12px; margin:18px 0 }
+.btn{
+  display:inline-flex; align-items:center; gap:10px; padding:10px 14px; border-radius:12px;
+  font-weight:800; border:1px solid color-mix(in srgb, var(--muted) 25%, transparent);
+  cursor:pointer; text-decoration:none;
+}
+.btn-primary{ background:linear-gradient(45deg,var(--brand),var(--brand-2)); color:#0b1220; box-shadow:var(--shadow) }
+.btn-ghost{ background:color-mix(in srgb, var(--surface) 70%, transparent); color:var(--text) }
+.hints kbd{
+  font-family:"Press Start 2P", system-ui; font-size:10px; padding:3px 6px; border-radius:6px;
+  background:color-mix(in srgb, var(--surface) 70%, transparent);
+  border:1px solid color-mix(in srgb, var(--muted) 25%, transparent);
+}
+
+.hero-card{
+  align-self:center; justify-self:end; width:min(360px, 90%);
+  background:var(--surface); border-radius:20px;
+  border:1px solid color-mix(in srgb, var(--muted) 22%, transparent);
+  overflow:hidden; box-shadow:var(--shadow);
+}
+.crt{ position:relative; padding:18px; background:#000 }
+.crt img{ width:100%; aspect-ratio:1; object-fit:cover; image-rendering:pixelated }
+.scanline{ content:""; position:absolute; inset:0;
+  background: repeating-linear-gradient(0deg, rgba(255,255,255,.04) 0 2px, transparent 2px 4px);
+}
+.card-foot{
+  padding:10px 14px; font-family:"Press Start 2P", system-ui; font-size:10px; color:var(--muted);
+  background:color-mix(in srgb, var(--surface) 80%, transparent);
+  border-top:1px solid color-mix(in srgb, var(--muted) 22%, transparent);
+}
+
+/* Badges */
+.badges{ display:flex; gap:10px; padding:22px 0 0 }
+.badge{
+  font-family:"Press Start 2P", system-ui; font-size:10px; padding:.35rem .6rem; border-radius:999px;
+  background:color-mix(in srgb, var(--surface) 70%, transparent);
+  border:1px solid color-mix(in srgb, var(--muted) 25%, transparent);
+}
+.badge span{ color:var(--muted) }
+
+/* Cards */
+.card-grid{ display:grid; grid-template-columns: repeat(12, 1fr); gap:18px }
+.card{
+  grid-column: span 4; background:var(--surface);
+  border:1px solid color-mix(in srgb, var(--muted) 22%, transparent);
+  border-radius:var(--radius); overflow:hidden; box-shadow:var(--shadow);
+  color:inherit; transition: transform .15s ease;
+}
+.card:hover{ transform: translateY(-4px) }
+.card img{ aspect-ratio:16/10; object-fit:cover }
+.card-body{ padding:var(--pad) }
+.card-body h3{ margin:0 0 6px; font-size:18px }
+.pills{ display:flex; gap:8px; margin-top:10px; flex-wrap:wrap }
+.pills span{
+  font-size:12px; color:var(--muted);
+  border:1px solid color-mix(in srgb, var(--muted) 25%, transparent);
+  border-radius:999px; padding:.18rem .5rem;
+}
+.more{ margin-top:14px }
+
+/* About */
+.about-grid{ display:grid; grid-template-columns: repeat(12, 1fr); gap:18px }
+.about-card{
+  grid-column: span 4; background:var(--surface);
+  border:1px solid color-mix(in srgb, var(--muted) 22%, transparent);
+  border-radius:var(--radius); padding:var(--pad);
+}
+
+/* Contact */
+form .grid{ display:grid; grid-template-columns:1fr 1fr; gap:12px }
+label{ font-size:14px; color:var(--muted) }
+input, textarea{
+  width:100%; border:1px solid color-mix(in srgb, var(--muted) 25%, transparent);
+  background:transparent; color:var(--text); border-radius:12px; padding:12px; font:inherit;
+}
+textarea{ min-height:120px }
+.span-2{ grid-column:1 / span 2 }
+
+/* ASCII pet */
+.ascii-pet{
+  margin-top:16px; display:inline-flex; gap:12px; align-items:flex-start; padding:12px;
+  border-radius:12px; border:1px solid color-mix(in srgb, var(--muted) 25%, transparent);
+  background:color-mix(in srgb, var(--surface) 70%, transparent); box-shadow:var(--shadow);
+}
+.ascii-pet pre{
+  margin:0; font:700 14px/16px ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  letter-spacing:.5px; white-space:pre; color:var(--text);
+  text-shadow:0 0 6px color-mix(in srgb, var(--brand) 30%, transparent);
+}
+.pet-say{ align-self:center; font-size:12px; padding:6px 10px }
+
+footer{ border-top:1px solid color-mix(in srgb, var(--muted) 25%, transparent); padding:24px 0 56px; color:var(--muted) }
+.foot{ display:flex; justify-content:space-between; align-items:center }
+.top{ text-decoration:none }
+
+/* Responsive */
+@media (max-width:900px){
+  .hero-grid{ grid-template-columns:1fr }
+  .hero-card{ justify-self:start; order:-1 }
+  .card{ grid-column: span 6 }
+  .about-card{ grid-column: span 6 }
+}
+@media (max-width:640px){
+  .tabbar{ gap:6px }
+  .tab{ padding:8px 10px }
+  .card{ grid-column: span 12 }
+  .about-card{ grid-column: span 12 }
+  form .grid{ grid-template-columns:1fr }
+  .span-2{ grid-column:auto }
+  .ascii-pet pre{ font-size:12px; line-height:14px }
+}
+
+/* Motion prefs */
+@media (prefers-reduced-motion: reduce){
+  *{ animation:none !important; transition:none !important }
+}
+
+/* ==== Scroll-site overrides (stack sections for scrolling) ==== */
+.scroll-site .section{
+  display:block;           /* show all sections */
+  scroll-margin-top:80px;  /* offset for sticky nav when linking */
+  padding:72px 0;          /* a bit more breathing room for each section */
+}
+
+/* Optional: make header background a touch more solid on scroll */
+@media (min-width:640px){
+  .nav { background: color-mix(in srgb, var(--bg) 90%, transparent); }
+}
+
+/* Tiny skill icons */
+.skill-ico{
+  width:16px; height:16px; vertical-align:middle; margin-right:6px; display:inline-block;
+  filter: drop-shadow(0 0 4px color-mix(in srgb, var(--brand) 30%, transparent));
+}

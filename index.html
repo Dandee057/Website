@@ -1,0 +1,353 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Daniel Dennison · Game Designer & Dev</title>
+    <meta name="description" content="Quirky game-design portfolio: systems, prototypes, and research." />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="icon" href="assets/favicon.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body class="scroll-site"><!-- NEW: flag to enable scroll-mode styles -->
+
+    <header class="nav tabs" role="navigation" aria-label="Primary">
+      <div class="container nav-inner">
+        <a class="brand" href="#home" aria-label="Home">
+          <span class="pixel" aria-hidden="true"></span>
+          <span class="brand-text">Daniel Dennison</span>
+        </a>
+
+        <nav class="tabbar" role="tablist">
+          <a role="tab" class="tab is-active" data-section="home" href="#home">Home</a>
+          <a role="tab" class="tab" data-section="about" href="#about">About</a>
+          <a role="tab" class="tab" data-section="projects" href="#projects">Projects</a>
+          <a role="tab" class="tab" data-section="contact" href="#contact">Contact</a>
+        </nav>
+      </div>
+    </header>
+
+    <div class="bg-grid" aria-hidden="true"></div>
+    <div class="bg-sparkles" aria-hidden="true"></div>
+
+    <!-- SECTION 1: Landing (unchanged) -->
+    <main id="home" class="section is-active" role="tabpanel" aria-labelledby="tab-home">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <p class="kicker"> • Game Designer • Animator • App Developer</p>
+          <h1><span class="sprite-emoji"></span> Howdy! I'm <span class="name">Dan</span> and I like making games!🕹️</h1>
+          <p class="lead">Unity & UE5 developer, this site is my little arcade cabinet of 
+            games I've made! Have a gander and be gentle on the feedback - I'm sensitive...
+          </p>
+          <div class="cta">
+            <a class="btn btn-primary" href="#projects">Start Game</a>
+          </div>
+
+          <aside class="ascii-pet" role="img" aria-label="ASCII buddy">
+            <pre aria-hidden="true"></pre>
+            <button class="pet-say btn btn-ghost" type="button">Pet</button>
+          </aside>
+        </div>
+
+        <figure class="hero-card" aria-label="Pixelish avatar / logo placeholder">
+          <div class="crt">
+            <img src="assets/portrait-placeholder.png" alt="Daniel avatar" />
+            <span class="scanline" aria-hidden="true"></span>
+          </div>
+          <figcaption class="card-foot">Dandee • Me</figcaption>
+        </figure>
+      </div>
+
+      <section class="badges container" aria-label="Quick stats">
+        <div class="badge">Unity <span>• C#</span></div>
+        <div class="badge">UE5 <span>• Blueprints</span></div>
+        <div class="badge">Android <span>• Kotlin</span></div>
+        <div class="badge">Blender <span>• Animation</span></div>
+        <div class="badge">HTML5 / CSS3 <span>• Javascript</span></div>
+      </section>
+    </main>
+
+    <!-- SECTION 2: About -->
+    <section id="about" class="section" role="region" aria-labelledby="tab-about">
+      <div class="container">
+        <header class="section-head">
+          <h2>Who Me?</h2>
+          <p class="meta">Dan's Lore • Qualifications • Skills</p>
+        </header>
+
+        <div class="about-grid" style="margin-top: 16px;">
+          <article class="about-card" aria-label="Bio">
+            <h3>Lore</h3>
+            <p>
+              I've known since I was a wee lad that I wanted to make video games, 
+              I fell in love with the art form that is video game design. 
+            </p>
+            <p>
+              The combination of immersion and storytelling makes us feel intertwined with the very 
+              characters we play.  
+            </p>
+            <p>
+              I aspire to inspire others through the art that is video games.
+            </p>
+          </article>
+
+          <article class="about-card" aria-label="What I do">
+            <h3>Qualifications</h3>
+            <ul>
+              <li>Gameplay prototyping & combat tuning</li>
+              <li>Procedural terrain & pathing experiments</li>
+              <li>Tools & pipelines for designers</li>
+              <li>Stylised animation & VFX experiments</li>
+            </ul>
+          </article>
+
+          <article class="about-card" aria-label="Skills">
+            <h3>Skills & Tools</h3>
+            <div class="pills" style="flex-wrap:wrap">
+              <!-- Use your own SVGs in /assets/skills if you like -->
+              <span><img class="skill-ico" src="assets/skills/unity.svg" alt="" /> Unity</span>
+              <span><img class="skill-ico" src="assets/skills/ue.svg" alt="" /> Unreal (UE5)</span>
+              <span><img class="skill-ico" src="assets/skills/csharp.svg" alt="" /> C#</span>
+              <span><img class="skill-ico" src="assets/skills/blender.svg" alt="" /> Blender</span>
+              <span><img class="skill-ico" src="assets/skills/kotlin.svg" alt="" /> Kotlin</span>
+              <span><img class="skill-ico" src="assets/skills/html.svg" alt="" /> HTML</span>
+              <span><img class="skill-ico" src="assets/skills/css.svg" alt="" /> CSS</span>
+              <span><img class="skill-ico" src="assets/skills/js.svg" alt="" /> JavaScript</span>
+              <span><img class="skill-ico" src="assets/skills/git.svg" alt="" /> Git</span>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 3: Projects -->
+    <section id="projects" class="section" role="region" aria-labelledby="tab-projects">
+      <div class="container">
+        <header class="section-head">
+          <h2>Projects</h2>
+          <p class="meta">Recent work • Prototypes • Jams</p>
+        </header>
+
+        <div class="card-grid" style="margin-top: 16px;">
+          <!-- Project Card 1 -->
+          <article class="card">
+            <img src="assets/projects/planet-td-thumb.jpg" alt="Planet TD thumbnail" />
+            <div class="card-body">
+              <h3>Planet TD</h3>
+              <p>Marching-cubes globe with carved paths, water-bound enemies, and tactical tower spots.</p>
+              <div class="pills">
+                <span>Unity</span><span>C#</span><span>Procedural</span>
+              </div>
+              <div class="more">
+                <a class="btn btn-ghost" href="https://github.com/youruser/planet-td" target="_blank" rel="noopener">Repo</a>
+                <a class="btn btn-primary" href="https://youruser.itch.io/planet-td" target="_blank" rel="noopener">itch.io</a>
+              </div>
+            </div>
+          </article>
+
+          <!-- Project Card 2 -->
+          <article class="card">
+            <img src="assets/projects/parry-this-thumb.jpg" alt="Parry This thumbnail" />
+            <div class="card-body">
+              <h3>Parry This</h3>
+              <p>Boss-parry prototype with tight timing windows and clear telegraphs. Learn, adapt, punish.</p>
+              <div class="pills">
+                <span>Unity</span><span>Combat</span><span>Animation</span>
+              </div>
+              <div class="more">
+                <a class="btn btn-ghost" href="https://github.com/youruser/parry-this" target="_blank" rel="noopener">Repo</a>
+                <a class="btn btn-primary" href="https://youruser.itch.io/parry-this" target="_blank" rel="noopener">itch.io</a>
+              </div>
+            </div>
+          </article>
+
+          <!-- Project Card 3 -->
+          <article class="card">
+            <img src="assets/projects/draconomics-thumb.jpg" alt="Draconomics thumbnail" />
+            <div class="card-body">
+              <h3>Draconomics</h3>
+              <p>A budgeting-meets-dragon app: feed your dragon by hitting saving goals and daily habits.</p>
+              <div class="pills">
+                <span>Android</span><span>Kotlin</span><span>UX</span>
+              </div>
+              <div class="more">
+                <a class="btn btn-ghost" href="https://github.com/youruser/draconomics" target="_blank" rel="noopener">Repo</a>
+                <a class="btn btn-primary" href="https://youruser.itch.io/draconomics" target="_blank" rel="noopener">itch.io</a>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 4: Contact -->
+    <section id="contact" class="section" role="region" aria-labelledby="tab-contact">
+      <div class="container">
+        <header class="section-head">
+          <h2>Contact</h2>
+          <p class="meta">Say hi • Collaborations • Feedback</p>
+        </header>
+
+        <form class="card-body" style="padding:0; margin-top:16px" action="https://formspree.io/f/yourFormID" method="POST">
+          <div class="grid">
+            <div>
+              <label for="name">Name</label>
+              <input id="name" name="name" type="text" placeholder="Your name" required />
+            </div>
+            <div>
+              <label for="email">Email</label>
+              <input id="email" name="_replyto" type="email" placeholder="you@example.com" required />
+            </div>
+            <div class="span-2">
+              <label for="message">Message</label>
+              <textarea id="message" name="message" placeholder="What’s up?" required></textarea>
+            </div>
+          </div>
+          <div style="margin-top:12px">
+            <button class="btn btn-primary" type="submit">Send</button>
+          </div>
+        </form>
+
+        <footer class="foot" style="margin-top:22px">
+          <a class="top" href="#home">Back to top ↑</a>
+          <small>© <span id="y"></span> Daniel Dennison</small>
+        </footer>
+      </div>
+    </section>
+
+    <!-- Your original ASCII pet script (untouched) -->
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const pre = document.querySelector('.ascii-pet pre');
+      const btn = document.querySelector('.pet-say');
+      if (!pre || !btn) return;
+      btn.textContent = 'Pet';
+
+      const normal = [
+String.raw`  
+
+   /\_/\ 
+  ( •ᴥ• )/
+  (  ^  )
+   | | |`,
+String.raw`  
+
+   /\_/\ 
+ \( •ᴥ• ) 
+  (  ^  )
+   | | |`,
+String.raw`  
+
+   /\_/\ 
+  ( -ᴥ- )/
+  (  ^  )
+   | | |`,
+String.raw`  
+
+   /\_/\ 
+ \( •ᴥ• ) 
+  (  ^  )
+   | | |`
+      ];
+
+      const hearts = [
+String.raw`  
+    ♥
+   /\_/\ 
+  ( ^ᴥ^ )/
+  (  ^  )
+   | | |`,
+String.raw`  
+    ♥♥
+   /\_/\ 
+  ( ^ᴥ^ )/
+  (  ^  )
+   | | |`,
+String.raw`  
+    ♥♥♥
+   /\_/\ 
+  ( ^ᴥ^ )/
+  (  ^  )
+   | | |`
+      ];
+
+      const mql = window.matchMedia('(prefers-reduced-motion: reduce)');
+      let i = 0, loop = null, playingHearts = false;
+
+      const draw = (frame) => { pre.textContent = frame; };
+      const stopLoop = () => { if (loop) { clearInterval(loop); loop = null; } };
+      const startLoop = () => {
+        stopLoop();
+        if (mql.matches) { i = 0; return draw(normal[0]); }
+        loop = setInterval(() => { i = (i + 1) % normal.length; draw(normal[i]); }, 500);
+      };
+
+      draw(normal[0]); startLoop();
+      mql.addEventListener?.('change', startLoop);
+
+      btn.addEventListener('click', () => {
+        if (playingHearts) return;
+        playingHearts = true;
+        stopLoop();
+
+        if (mql.matches) {
+          draw(hearts[1]);
+          setTimeout(() => { draw(normal[0]); playingHearts = false; }, 700);
+          return;
+        }
+
+        let h = 0;
+        draw(hearts[h++]); 
+        const temp = setInterval(() => {
+          if (h >= hearts.length) {
+            clearInterval(temp);
+            playingHearts = false;
+            i = 0;
+            draw(normal[0]);
+            startLoop();
+          } else {
+            draw(hearts[h++]);
+          }
+        }, 220);
+      });
+    });
+    </script>
+
+    <!-- NEW: tiny scroll + active-link script (doesn't touch your ASCII) -->
+    <script>
+      // Smooth scroll for internal links
+      document.querySelectorAll('a[href^="#"]').forEach(a=>{
+        a.addEventListener('click', (e)=>{
+          const id = a.getAttribute('href');
+          const el = document.querySelector(id);
+          if (el) {
+            e.preventDefault();
+            el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            history.replaceState(null, '', id);
+          }
+        });
+      });
+
+      // Scroll-spy: set active tab by section in view
+      const tabs = document.querySelectorAll('.tabbar .tab');
+      const setActive = (id)=>{
+        tabs.forEach(t=> t.classList.toggle('is-active', t.getAttribute('href') === `#${id}`));
+      };
+      const io = new IntersectionObserver((entries)=>{
+        entries.forEach(entry=>{
+          if (entry.isIntersecting){
+            setActive(entry.target.id);
+          }
+        });
+      }, { rootMargin: "-40% 0px -50% 0px", threshold: 0.01 });
+
+      document.querySelectorAll('section.section, main.section').forEach(s=> io.observe(s));
+
+      // Footer year
+      const y = document.getElementById('y'); if (y) y.textContent = new Date().getFullYear();
+    </script>
+  </body>
+</html>

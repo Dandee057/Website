@@ -104,7 +104,7 @@ h1{ font-size:clamp(28px, 4vw, 46px); line-height:1.15; margin:.35em 0 .5em }
 .card-body{ padding:var(--pad) }
 .card-body h3{ margin:0 0 6px; font-size:18px }
 
-/* About */
+/* About grid */
 .about-grid {
   display: grid;
   grid-template-columns: repeat(12, 1fr);
@@ -122,8 +122,68 @@ h1{ font-size:clamp(28px, 4vw, 46px); line-height:1.15; margin:.35em 0 .5em }
 .about-card:nth-child(2) { grid-column: span 6; }
 .about-skills { grid-column: span 12; }
 
-.bullets { padding-left:18px; margin:0 }
-.bullets li { margin:8px 0 }
+/* Credential cards */
+.cred-list { list-style: none; padding: 0; margin: 8px 0 0; display: grid; gap: 16px; }
+.cred {
+  display: grid;
+  grid-template-columns: 64px 1fr;
+  gap: 14px;
+  padding: 12px;
+  border: 1px solid color-mix(in srgb, var(--muted) 22%, transparent);
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--surface) 70%, transparent);
+}
+.cred-logo {
+  width: 64px; height: 64px; border-radius: 12px; background: var(--surface);
+  display: grid; place-items: center;
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--muted) 22%, transparent);
+}
+.cred-logo img { max-width: 70%; max-height: 70%; object-fit: contain; display: block; }
+.cred-title { margin: 0 0 4px; font-size: 16px; }
+.cred-meta { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; color: var(--muted); font-size: 14px; }
+.badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 2px 8px; border-radius: 999px; font-size: 12px; font-weight: 700;
+  border: 1px solid color-mix(in srgb, var(--muted) 25%, transparent);
+  background: color-mix(in srgb, var(--surface) 70%, transparent);
+}
+.badge-verified { color: #7ee787; border-color: color-mix(in srgb, #7ee787 60%, transparent); }
+.cred-bullets { margin: 8px 0 0; padding-left: 18px; color: var(--text); }
+.cred-bullets li { margin: 6px 0; }
+.cred-actions { margin-top: 10px; display: flex; gap: 8px; }
+
+/* See more credentials (disclosure) */
+.cred-details { margin-top: 12px; }
+.cred-details > summary {
+  list-style: none;
+  cursor: pointer;
+  user-select: none;
+  width: fit-content;
+  padding: 8px 12px;
+  border-radius: 12px;
+  border: 1px solid color-mix(in srgb, var(--muted) 25%, transparent);
+  background: color-mix(in srgb, var(--surface) 70%, transparent);
+  font-weight: 700;
+}
+.cred-details > summary:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--brand) 45%, transparent);
+  outline-offset: 2px;
+}
+.cred-details > summary::-webkit-details-marker { display: none; }
+
+/* Only show bottom button when open; hide summary's "See less" label */
+.cred-details .expand { display: inline; }
+.cred-details[open] .expand { display: none; }
+.cred-details .collapse { display: none !important; }
+
+.cred-details .collapsible { overflow: hidden; height: 0; }
+.cred-details .show-less {
+  display: none;
+  margin-top: 14px;
+  width: 100%;
+  justify-content: center;
+}
+.cred-details[open] .show-less { display: inline-flex; }
 
 /* Skills */
 .about-skills .pills {
@@ -144,25 +204,15 @@ h1{ font-size:clamp(28px, 4vw, 46px); line-height:1.15; margin:.35em 0 .5em }
   box-shadow: var(--shadow);
 }
 .icon-frame {
-  width: 84px;
-  aspect-ratio: 1 / 1;
-  display: grid;
-  place-items: center;
-  border-radius: 12px;
-  background: var(--surface);
+  width: 84px; aspect-ratio: 1 / 1;   /* change to 64px if you prefer */
+  display: grid; place-items: center;
+  border-radius: 12px; background: var(--surface);
   box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--muted) 22%, transparent);
 }
 .icon-frame img {
-  width: 70%;
-  height: 70%;
-  object-fit: contain;
-  display: block;
+  width: 70%; height: 70%; object-fit: contain; display: block;
 }
-.skill-pill .label {
-  margin-top: 8px;
-  font-size: 13px;
-  color: var(--muted);
-}
+.skill-pill .label { margin-top: 8px; font-size: 13px; color: var(--muted); }
 
 /* Contact */
 form .grid{ display:grid; grid-template-columns:1fr 1fr; gap:12px }
@@ -203,11 +253,10 @@ footer{ border-top:1px solid color-mix(in srgb, var(--muted) 25%, transparent); 
   form .grid{ grid-template-columns:1fr }
   .span-2{ grid-column:auto }
   .ascii-pet pre{ font-size:12px; line-height:14px }
-  .about-skills .pills {
-    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-    gap: 12px;
-  }
+  .about-skills .pills { grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 12px; }
   .icon-frame { width: 76px; }
+  .cred { grid-template-columns: 48px 1fr; }
+  .cred-logo { width: 48px; height: 48px; }
 }
 
 /* Motion prefs */
@@ -224,42 +273,28 @@ footer{ border-top:1px solid color-mix(in srgb, var(--muted) 25%, transparent); 
 @media (min-width:640px){
   .nav { background: color-mix(in srgb, var(--bg) 90%, transparent); }
 }
-/* Credential list */
-.cred-list { list-style: none; padding: 0; margin: 8px 0 0; display: grid; gap: 16px; }
-.cred {
-  display: grid;
-  grid-template-columns: 64px 1fr;
-  gap: 14px;
-  padding: 12px;
-  border: 1px solid color-mix(in srgb, var(--muted) 22%, transparent);
-  border-radius: 14px;
-  background: color-mix(in srgb, var(--surface) 70%, transparent);
+
+/* Hero avatar adjustments */
+.hero-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;   /* centers horizontally */
+  justify-content: center; /* centers vertically in the grid cell */
+  max-width: 260px;      /* bigger than default */
+  margin: auto;          /* centers in its column */
 }
-.cred-logo {
-  width: 64px; height: 64px; border-radius: 12px; background: var(--surface);
-  display: grid; place-items: center;
-  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--muted) 22%, transparent);
+
+.hero-card img {
+  width: 100%;
+  max-width: 600px;      /* controls size on large screens */
+  border-radius: 12px;   /* optional: soften corners */
 }
-.cred-logo img { max-width: 70%; max-height: 70%; object-fit: contain; display: block; }
 
-.cred-title { margin: 0 0 4px; font-size: 16px; }
-.cred-meta { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; color: var(--muted); font-size: 14px; }
-
-.badge {
-  display: inline-flex; align-items: center; gap: 6px;
-  padding: 2px 8px; border-radius: 999px; font-size: 12px; font-weight: 700;
-  border: 1px solid color-mix(in srgb, var(--muted) 25%, transparent);
-  background: color-mix(in srgb, var(--surface) 70%, transparent);
-}
-.badge-verified { color: #7ee787; border-color: color-mix(in srgb, #7ee787 60%, transparent); }
-
-.cred-bullets { margin: 8px 0 0; padding-left: 18px; color: var(--text); }
-.cred-bullets li { margin: 6px 0; }
-
-.cred-actions { margin-top: 10px; display: flex; gap: 8px; }
-
-/* Stack on small screens */
-@media (max-width: 560px) {
-  .cred { grid-template-columns: 48px 1fr; }
-  .cred-logo { width: 48px; height: 48px; }
-}
+/* ===== Fix: ensure cards/skills heights don't visually “cut” ===== */
+.about-grid { align-items: start; }
+.about-grid > .about-card { align-self: start; }
+.about-skills h3 { margin: 0 0 10px; }
+.about-skills .pills { margin: 10px 0 0; }
+.about-skills .pills:last-child,
+.about-skills > *:last-child { margin-bottom: 0 !important; }
+.about-skills { padding-bottom: calc(var(--pad) - 6px); }

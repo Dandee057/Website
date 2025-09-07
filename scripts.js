@@ -1,4 +1,4 @@
-// ===== ASCII Pet: lag + run animation (left/right) + fixed dock button =====
+// ===== ASCII Pet: lag + run animation + head-shake-on-"Cage Katniss" hover =====
 document.addEventListener('DOMContentLoaded', () => {
   const petWrap = document.querySelector('.ascii-pet');
   const pre = petWrap?.querySelector('pre');
@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const inlineToggle = document.getElementById('petToggle') || null;
 
-  // ---------- FRAMES ----------
+  // ---------- PET FRAMES (original doggo) ----------
   const idle = [
 String.raw`  
 
@@ -35,69 +35,67 @@ String.raw`
    | | |`
   ];
 
-  // Run facing RIGHT
   const runR = [
 String.raw`  
 
-   /\_/\ 
+   /\_/\
 ε=( >ᴥ> )
   (  ^  )
    / | \
 `,
 String.raw`  
 
-   /\_/\ 
-ε=( >ᴥ> )
-  (  ^  )
-   \ | /
-`,
-String.raw`  
-
-   /\_/\ 
-ε=( >ᴥ> )
-  (  ^  )
-   / | \
-`,
-String.raw`  
-
-   /\_/\ 
+   /\_/\
 ε=( >ᴥ> )
   (  ^  )
    \ | /
-`
-  ];
-
-  // Run facing LEFT
-  const runL = [
+`,
 String.raw`  
 
-   /\_/\ 
-  ( <ᴥ< )=3
+   /\_/\
+ε=( >ᴥ> )
   (  ^  )
    / | \
 `,
 String.raw`  
 
-   /\_/\ 
-  ( <ᴥ< )=3
-  (  ^  )
-   \ | /
-`,
-String.raw`  
-
-   /\_/\ 
-  ( <ᴥ< )=3
-  (  ^  )
-   / | \
-`,
-String.raw`  
-
-   /\_/\ 
-  ( <ᴥ< )=3
+   /\_/\
+ε=( >ᴥ> )
   (  ^  )
    \ | /
 `
-  ];
+];
+
+const runL = [
+String.raw`  
+
+   /\_/\
+  ( <ᴥ< )=3
+  (  ^  )
+   / | \
+`,
+String.raw`  
+
+   /\_/\
+  ( <ᴥ< )=3
+  (  ^  )
+   \ | /
+`,
+String.raw`  
+
+   /\_/\
+  ( <ᴥ< )=3
+  (  ^  )
+   / | \
+`,
+String.raw`  
+
+   /\_/\
+  ( <ᴥ< )=3
+  (  ^  )
+   \ | /
+`
+];
 
   const hearts = [
 String.raw`  
@@ -120,18 +118,37 @@ String.raw`
    | | |`
   ];
 
+  // ---------- NEW: HEAD-SHAKING ASCII CAT (plays on "Cage Katniss" hover) ----------
+  // Loops while hovering the "Cage Katniss" button(s).
+  const catShake = [
+String.raw`  
+  /\_/\ 
+ ( o .o)
+  > ^ <`,
+String.raw`  
+  /\_/\ 
+ ( o_o )
+  > ^ <`,
+String.raw`  
+  /\_/\ 
+ (o . o )
+  > ^ <`
+  ];
+
   const mql = window.matchMedia('(prefers-reduced-motion: reduce)');
 
   // ---------- STATE ----------
   let animTimer = null;
   let animIndex = 0;
-  let currentSet = idle;     // reference to current frames
+  let currentSet = idle;
+  let currentSpeed = 500;
   let playingHearts = false;
 
   const draw = f => { pre.textContent = f; };
   const startAscii = (frames, speedMs) => {
     clearInterval(animTimer);
     currentSet = frames;
+    currentSpeed = speedMs;
     animIndex = 0;
     draw(frames[0]);
     if (mql.matches) return;
@@ -182,12 +199,12 @@ String.raw`
   let petSize = { w: 0, h: 0 };
   let homeRect = null;
 
-  const RUN_DISTANCE  = 35;  // switch to run when farther than this
-  const IDLE_DISTANCE = 8;  // return to idle when closer than this
-  const EASE = prefersReduced ? 1.0 : 0.01; // smaller = more lag
+  const RUN_DISTANCE  = 35;
+  const IDLE_DISTANCE = 8;
+  const EASE = prefersReduced ? 1.0 : 0.01;
 
   let lastX = 0;
-  let lastDir = 'right'; // remember facing
+  let lastDir = 'right';
 
   const setHome = () => { homeRect = petWrap.getBoundingClientRect(); };
   const clamp = (v, min, max) => Math.max(min, Math.min(max, v));
@@ -210,37 +227,40 @@ String.raw`
     }
   }
 
-  function loop() {
-    // Ease towards target (laggy)
-    pos.x += (target.x - pos.x) * EASE;
-    pos.y += (target.y - pos.y) * EASE;
-    apply();
+// In your loop() function, right after apply();
+function loop() {
+  // Ease towards target (laggy)
+  pos.x += (target.x - pos.x) * EASE;
+  pos.y += (target.y - pos.y) * EASE;
+  apply();
 
-    // Direction: prefer velocity; fallback to vector to target
-    const vx = pos.x - lastX;
-    const dx = target.x - pos.x, dy = target.y - pos.y;
-    const dist = Math.hypot(dx, dy);
-
-    let dir = lastDir;
-    if (Math.abs(vx) > 0.4) dir = vx > 0 ? 'right' : 'left';
-    else dir = dx >= 0 ? 'right' : 'left';
-
-    // Choose run set by direction
-    const desiredRun = dir === 'right' ? runR : runL;
-
-    if (dist > RUN_DISTANCE && currentSet !== desiredRun) {
-      startAscii(desiredRun, 120);
-    } else if (dist < IDLE_DISTANCE && currentSet !== idle) {
-      startAscii(idle, 500);
-    }
-
-    lastDir = dir;
-    lastX = pos.x;
-
+  // ⛳ NEW: don't change animation set while special anims run
+  if (shaking || playingHearts) {
     rafId = requestAnimationFrame(loop);
+    return;
   }
 
-  // hide/show inline controls while free for immersion
+  // Direction: velocity > vector-to-target
+  const vx = pos.x - lastX;
+  const dx = target.x - pos.x, dy = target.y - pos.y;
+  const dist = Math.hypot(dx, dy);
+
+  let dir = Math.abs(vx) > 0.4 ? (vx > 0 ? 'right' : 'left') : (dx >= 0 ? 'right' : 'left');
+  const desiredRun = dir === 'right' ? runR : runL;
+
+  if (dist > RUN_DISTANCE && currentSet !== desiredRun) {
+    startAscii(desiredRun, 120);
+  } else if (dist < IDLE_DISTANCE && currentSet !== idle) {
+    startAscii(idle, 500);
+  }
+
+  lastDir = dir;
+  lastX = pos.x;
+
+  rafId = requestAnimationFrame(loop);
+}
+
+  // hide/show inline controls while free
   const hideInlineControls = (hide) => {
     btnPet.style.display = hide ? 'none' : '';
     if (inlineToggle) inlineToggle.style.display = hide ? 'none' : '';
@@ -250,7 +270,7 @@ String.raw`
     if (active) return;
     active = true;
 
-    petWrap.style.animation = 'none'; // JS controls transform
+    petWrap.style.animation = 'none';
     petSize = { w: petWrap.offsetWidth, h: petWrap.offsetHeight };
     setHome();
     petWrap.classList.add('pet-free');
@@ -315,11 +335,59 @@ String.raw`
   function setDockState(free) {
     dockBtn.textContent = free ? 'Cage Katniss' : 'Free Katniss';
     dockBtn.setAttribute('aria-pressed', free ? 'true' : 'false');
+    dockBtn.dataset.state = free ? 'cage' : 'free'; // handy attribute if needed
   }
   setDockState(false);
 
   dockBtn.addEventListener('click', () => active ? disableFree() : enableFree());
   inlineToggle?.addEventListener('click', () => active ? disableFree() : enableFree());
+
+  // ---------- NEW: Hover-to-shake handler when label says "Cage Katniss" ----------
+  let savedSet = idle;
+  let savedSpeed = 500;
+  let shaking = false;
+
+  const shouldShake = (el) => (el?.textContent || '').toLowerCase().includes('cage katniss');
+
+  const startCatShakeLoop = () => {
+    if (shaking) return;
+    shaking = true;
+    // remember what we were playing
+    savedSet = currentSet;
+    savedSpeed = currentSpeed;
+
+    if (mql.matches) {
+      // reduced motion: flash a single "turned head" frame briefly
+      draw(catShake[0]);
+      setTimeout(() => {
+        if (!shaking) return; // already restored
+        startAscii(savedSet, savedSpeed);
+        shaking = false;
+      }, 600);
+      return;
+    }
+    startAscii(catShake, 110);
+  };
+
+  const stopCatShakeLoop = () => {
+    if (!shaking) return;
+    shaking = false;
+    startAscii(savedSet, savedSpeed);
+  };
+
+  const addHoverShake = (el) => {
+    if (!el) return;
+    el.addEventListener('pointerenter', () => { if (shouldShake(el)) startCatShakeLoop(); });
+    el.addEventListener('pointerleave', stopCatShakeLoop);
+    // also re-check after clicks (label can change)
+    el.addEventListener('click', () => {
+      // small delay so textContent reflects the new state
+      setTimeout(() => { if (!shouldShake(el)) stopCatShakeLoop(); }, 0);
+    });
+  };
+
+  addHoverShake(dockBtn);
+  addHoverShake(inlineToggle);
 });
 
 

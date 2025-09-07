@@ -52,16 +52,16 @@ img{ max-width:100%; display:block }
 .tab:is(:hover,:focus){ transform:translateY(-2px) }
 .tab.is-active{ background:linear-gradient(45deg,var(--brand),var(--brand-2)); color:#0b1220 }
 
-/* Background greebles */
+/* Background greebles (layered behind content) */
 .bg-grid{
-  position:fixed; inset:0; pointer-events:none; opacity:.08;
+  position:fixed; inset:0; pointer-events:none; opacity:.08; z-index:-2;
   background-image:
     linear-gradient(to right, color-mix(in srgb, var(--muted) 18%, transparent) 1px, transparent 1px),
     linear-gradient(to bottom, color-mix(in srgb, var(--muted) 18%, transparent) 1px, transparent 1px);
   background-size:24px 24px;
 }
 .bg-sparkles{
-  position:fixed; inset:0; pointer-events:none; mix-blend-mode:screen; opacity:.25;
+  position:fixed; inset:0; pointer-events:none; mix-blend-mode:screen; opacity:.25; z-index:-1;
   background-image:
     radial-gradient(2px 2px at 20% 30%, var(--brand), transparent 60%),
     radial-gradient(2px 2px at 80% 40%, var(--brand-2), transparent 60%),
@@ -100,7 +100,14 @@ h1{ font-size:clamp(28px, 4vw, 46px); line-height:1.15; margin:.35em 0 .5em }
   color:inherit; transition: transform .15s ease;
 }
 .card:hover{ transform: translateY(-4px) }
-.card img{ aspect-ratio:16/10; object-fit:cover }
+.card img{
+  width:100%;
+  height:clamp(140px, 22vw, 220px);
+  object-fit:cover;
+  aspect-ratio:auto;
+  background:#000;
+  display:block;
+}
 .card-body{ padding:var(--pad) }
 .card-body h3{ margin:0 0 6px; font-size:18px }
 
@@ -170,12 +177,9 @@ h1{ font-size:clamp(28px, 4vw, 46px); line-height:1.15; margin:.35em 0 .5em }
   outline-offset: 2px;
 }
 .cred-details > summary::-webkit-details-marker { display: none; }
-
-/* Only show bottom button when open; hide summary's "See less" label */
 .cred-details .expand { display: inline; }
 .cred-details[open] .expand { display: none; }
 .cred-details .collapse { display: none !important; }
-
 .cred-details .collapsible { overflow: hidden; height: 0; }
 .cred-details .show-less {
   display: none;
@@ -204,14 +208,12 @@ h1{ font-size:clamp(28px, 4vw, 46px); line-height:1.15; margin:.35em 0 .5em }
   box-shadow: var(--shadow);
 }
 .icon-frame {
-  width: 84px; aspect-ratio: 1 / 1;   /* change to 64px if you prefer */
+  width: 84px; aspect-ratio: 1 / 1;
   display: grid; place-items: center;
   border-radius: 12px; background: var(--surface);
   box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--muted) 22%, transparent);
 }
-.icon-frame img {
-  width: 70%; height: 70%; object-fit: contain; display: block;
-}
+.icon-frame img { width: 70%; height: 70%; object-fit: contain; display: block; }
 .skill-pill .label { margin-top: 8px; font-size: 13px; color: var(--muted); }
 
 /* Contact */
@@ -224,18 +226,121 @@ input, textarea{
 textarea{ min-height:120px }
 .span-2{ grid-column:1 / span 2 }
 
-/* ASCII pet */
-.ascii-pet{ margin-top:16px; display:inline-flex; gap:12px; align-items:flex-start; padding:12px;
-  border-radius:12px; border:1px solid color-mix(in srgb, var(--muted) 25%, transparent);
-  background:color-mix(in srgb, var(--surface) 70%, transparent); box-shadow:var(--shadow) }
-.ascii-pet pre{ margin:0; font:700 14px/16px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+/* ASCII pet (box + controls) */
+.ascii-pet{
+  /* switched to grid so buttons stack nicely */
+  display:grid;
+  grid-template-columns:auto 1fr; /* pet | controls */
+  grid-auto-rows:min-content;
+  column-gap:16px; row-gap:12px;
+  align-items:start;
+
+  margin-top:16px; padding:12px;
+  border-radius:16px;
+  border:1px solid color-mix(in srgb, var(--muted) 25%, transparent);
+  background:color-mix(in srgb, var(--surface) 70%, transparent);
+  box-shadow:0 0 0 3px #fff, var(--shadow);
+}
+.ascii-pet pre{
+  grid-column:1; grid-row:1 / span 2; /* span both button rows */
+  margin:0; font:700 14px/16px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   letter-spacing:.5px; white-space:pre; color:var(--text);
-  text-shadow:0 0 6px color-mix(in srgb, var(--brand) 30%, transparent) }
-.pet-say{ align-self:center; font-size:12px; padding:6px 10px }
+  text-shadow:0 0 6px color-mix(in srgb, var(--brand) 30%, transparent)
+}
+/* unified button sizing + bold; stack vertically in column 2 */
+.ascii-pet .pet-say,
+.ascii-pet .pet-toggle,
+.ascii-pet #petToggle{
+  grid-column:2;
+  justify-self:start; align-self:start;
+  padding:10px 14px; line-height:1;
+  font-size:16px; font-weight:800;
+  border-radius:12px;
+}
+/* make inline 'Free' button visually match ghost button */
+.ascii-pet .pet-toggle,
+.ascii-pet #petToggle{
+  display:inline-flex; align-items:center; gap:10px;
+  border:1px solid color-mix(in srgb, var(--muted) 25%, transparent);
+  background:color-mix(in srgb, var(--surface) 70%, transparent);
+}
+
+/* Free-roam mode: hide box + inline controls; JS controls position */
+.ascii-pet.pet-free {
+  position:fixed; left:0; top:0; margin:0; z-index:1000;
+  cursor:none; user-select:none; touch-action:none;
+  background:transparent !important; border:0 !important; box-shadow:none !important; padding:0 !important;
+  animation:none !important; /* let JS own transform */
+}
+.ascii-pet.pet-free pre { pointer-events:none; }
+.ascii-pet.pet-free .pet-say,
+.ascii-pet.pet-free #petToggle,
+.ascii-pet.pet-free .pet-toggle { display:none !important; }
+
+/* Always-visible dock button (to re-cage/free) */
+.pet-toggle-fixed{
+  position:fixed; right:16px; bottom:16px; z-index:1100;
+  display:inline-flex; align-items:center; gap:8px;
+  padding:10px 14px; border-radius:12px; font-weight:800;
+  border:1px solid color-mix(in srgb, var(--muted) 25%, transparent);
+  background:color-mix(in srgb, var(--surface) 70%, transparent);
+}
+@media (max-width:640px){
+  .pet-toggle-fixed{ right:12px; bottom:12px; padding:8px 12px; }
+}
 
 footer{ border-top:1px solid color-mix(in srgb, var(--muted) 25%, transparent); padding:24px 0 56px; color:var(--muted) }
 .foot{ display:flex; justify-content:space-between; align-items:center }
 .top{ text-decoration:none }
+
+/* Hero avatar adjustments + white circular frame */
+.hero-card{
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  max-width:300px; margin:auto;
+}
+.hero-card img{
+  width:260px; height:260px; object-fit:cover;
+  border-radius:50%;
+  box-shadow:0 0 0 3px #fff, 0 0 12px rgba(255,255,255,.3);
+  background:var(--surface);
+}
+@media (max-width:640px){
+  .hero-card img{ width:200px; height:200px; }
+}
+
+/* Floating dandelion seeds background (falling) */
+.dandelion-bg{
+  position:fixed; inset:0; pointer-events:none; overflow:hidden; z-index:0; /* behind content, above bg-grid */
+}
+.dandelion-seed{
+  position:absolute;
+  width:18px; height:18px;
+  background:url('assets/dandeion.png') no-repeat center/contain; /* use your asset name */
+  opacity:.28;
+  top:-10vh; /* start above the viewport */
+  left:var(--x, 0vw);
+  animation: fallSeed var(--dur, 18s) linear var(--delay, 0s) infinite;
+  will-change: transform, opacity;
+}
+@keyframes fallSeed{
+  0%   { transform: translateY(-15vh) translateX(0) rotate(0deg); opacity:0; }
+  10%  { opacity:.34; }
+  50%  { transform: translateY(55vh) translateX(var(--dx, 40px)) rotate(120deg); }
+  90%  { opacity:.34; }
+  100% { transform: translateY(115vh) translateX(calc(var(--dx, 40px) * 1.3)) rotate(240deg); opacity:0; }
+}
+@media (prefers-reduced-motion: reduce){
+  .dandelion-seed{ animation:none; display:none; }
+}
+
+/* ===== Fix: ensure cards/skills heights don't visually “cut” ===== */
+.about-grid { align-items: start; }
+.about-grid > .about-card { align-self: start; }
+.about-skills h3 { margin: 0 0 10px; }
+.about-skills .pills { margin: 10px 0 0; }
+.about-skills .pills:last-child,
+.about-skills > *:last-child { margin-bottom: 0 !important; }
+.about-skills { padding-bottom: calc(var(--pad) - 6px); }
 
 /* Responsive */
 @media (max-width:900px){
@@ -273,28 +378,3 @@ footer{ border-top:1px solid color-mix(in srgb, var(--muted) 25%, transparent); 
 @media (min-width:640px){
   .nav { background: color-mix(in srgb, var(--bg) 90%, transparent); }
 }
-
-/* Hero avatar adjustments */
-.hero-card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;   /* centers horizontally */
-  justify-content: center; /* centers vertically in the grid cell */
-  max-width: 260px;      /* bigger than default */
-  margin: auto;          /* centers in its column */
-}
-
-.hero-card img {
-  width: 100%;
-  max-width: 600px;      /* controls size on large screens */
-  border-radius: 12px;   /* optional: soften corners */
-}
-
-/* ===== Fix: ensure cards/skills heights don't visually “cut” ===== */
-.about-grid { align-items: start; }
-.about-grid > .about-card { align-self: start; }
-.about-skills h3 { margin: 0 0 10px; }
-.about-skills .pills { margin: 10px 0 0; }
-.about-skills .pills:last-child,
-.about-skills > *:last-child { margin-bottom: 0 !important; }
-.about-skills { padding-bottom: calc(var(--pad) - 6px); }

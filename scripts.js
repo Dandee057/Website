@@ -1,20 +1,23 @@
-// ===== ASCII Pet =====
+// ===== ASCII Pet: lag + run animation (left/right) + fixed dock button =====
 document.addEventListener('DOMContentLoaded', () => {
-  const pre = document.querySelector('.ascii-pet pre');
-  const btn = document.querySelector('.pet-say');
-  if (!pre || !btn) return;
-  btn.textContent = 'Pet';
+  const petWrap = document.querySelector('.ascii-pet');
+  const pre = petWrap?.querySelector('pre');
+  const btnPet = petWrap?.querySelector('.pet-say');
+  if (!petWrap || !pre || !btnPet) return;
 
-  const normal = [
+  const inlineToggle = document.getElementById('petToggle') || null;
+
+  // ---------- FRAMES ----------
+  const idle = [
 String.raw`  
 
-   /\_/\
+   /\_/\ 
   ( •ᴥ• )/
   (  ^  )
    | | |`,
 String.raw`  
 
-   /\_/\
+   /\_/\ 
  \( •ᴥ• ) 
   (  ^  )
    | | |`,
@@ -32,50 +35,127 @@ String.raw`
    | | |`
   ];
 
+  // Run facing RIGHT
+  const runR = [
+String.raw`  
+
+   /\_/\ 
+ε=( >ᴥ> )
+  (  ^  )
+   / | \
+`,
+String.raw`  
+
+   /\_/\ 
+ε=( >ᴥ> )
+  (  ^  )
+   \ | /
+`,
+String.raw`  
+
+   /\_/\ 
+ε=( >ᴥ> )
+  (  ^  )
+   / | \
+`,
+String.raw`  
+
+   /\_/\ 
+ε=( >ᴥ> )
+  (  ^  )
+   \ | /
+`
+  ];
+
+  // Run facing LEFT
+  const runL = [
+String.raw`  
+
+   /\_/\ 
+  ( <ᴥ< )=3
+  (  ^  )
+   / | \
+`,
+String.raw`  
+
+   /\_/\ 
+  ( <ᴥ< )=3
+  (  ^  )
+   \ | /
+`,
+String.raw`  
+
+   /\_/\ 
+  ( <ᴥ< )=3
+  (  ^  )
+   / | \
+`,
+String.raw`  
+
+   /\_/\ 
+  ( <ᴥ< )=3
+  (  ^  )
+   \ | /
+`
+  ];
+
   const hearts = [
 String.raw`  
     ♥
-   /\_/\
+   /\_/\ 
   ( ^ᴥ^ )/
   (  ^  )
    | | |`,
 String.raw`  
     ♥♥
-   /\_/\
+   /\_/\ 
   ( ^ᴥ^ )/
   (  ^  )
    | | |`,
 String.raw`  
     ♥♥♥
-   /\_/\
+   /\_/\ 
   ( ^ᴥ^ )/
   (  ^  )
    | | |`
   ];
 
   const mql = window.matchMedia('(prefers-reduced-motion: reduce)');
-  let i = 0, loop = null, playingHearts = false;
 
-  const draw = (frame) => { pre.textContent = frame; };
-  const stopLoop = () => { if (loop) { clearInterval(loop); loop = null; } };
-  const startLoop = () => {
-    stopLoop();
-    if (mql.matches) { i = 0; return draw(normal[0]); }
-    loop = setInterval(() => { i = (i + 1) % normal.length; draw(normal[i]); }, 500);
+  // ---------- STATE ----------
+  let animTimer = null;
+  let animIndex = 0;
+  let currentSet = idle;     // reference to current frames
+  let playingHearts = false;
+
+  const draw = f => { pre.textContent = f; };
+  const startAscii = (frames, speedMs) => {
+    clearInterval(animTimer);
+    currentSet = frames;
+    animIndex = 0;
+    draw(frames[0]);
+    if (mql.matches) return;
+    animTimer = setInterval(() => {
+      animIndex = (animIndex + 1) % frames.length;
+      draw(frames[animIndex]);
+    }, speedMs);
   };
+  const stopAscii = () => { clearInterval(animTimer); animTimer = null; };
 
-  draw(normal[0]);
-  startLoop();
-  mql.addEventListener?.('change', startLoop);
+  // initial idle loop
+  startAscii(idle, 500);
+  mql.addEventListener?.('change', () => startAscii(idle, 500));
 
-  btn.addEventListener('click', () => {
+  // hearts on “Pet”
+  btnPet.textContent = 'Pet Katniss';
+  btnPet.addEventListener('click', () => {
     if (playingHearts) return;
     playingHearts = true;
-    stopLoop();
+    stopAscii();
 
     if (mql.matches) {
       draw(hearts[1]);
-      setTimeout(() => { draw(normal[0]); playingHearts = false; }, 700);
+      setTimeout(() => { startAscii(idle, 500); playingHearts = false; }, 700);
       return;
     }
 
@@ -84,16 +164,167 @@ String.raw`
     const temp = setInterval(() => {
       if (h >= hearts.length) {
         clearInterval(temp);
+        startAscii(idle, 500);
         playingHearts = false;
-        i = 0;
-        draw(normal[0]);
-        startLoop();
       } else {
         draw(hearts[h++]);
       }
     }, 220);
   });
+
+  // ---------- FREE-ROAM FOLLOW (with lag + direction) ----------
+  const prefersReduced = mql.matches;
+
+  let active = false;
+  let rafId = null;
+  let target = { x: 0, y: 0 };
+  let pos    = { x: 0, y: 0 };
+  let petSize = { w: 0, h: 0 };
+  let homeRect = null;
+
+  const RUN_DISTANCE  = 35;  // switch to run when farther than this
+  const IDLE_DISTANCE = 8;  // return to idle when closer than this
+  const EASE = prefersReduced ? 1.0 : 0.01; // smaller = more lag
+
+  let lastX = 0;
+  let lastDir = 'right'; // remember facing
+
+  const setHome = () => { homeRect = petWrap.getBoundingClientRect(); };
+  const clamp = (v, min, max) => Math.max(min, Math.min(max, v));
+  const apply = () => { petWrap.style.transform = `translate3d(${pos.x}px, ${pos.y}px, 0)`; };
+
+  function onMove(clientX, clientY) {
+    const vw = window.innerWidth;
+    const vh = window.innerHeight;
+    const pad = 8;
+    const maxX = vw - petSize.w - pad;
+    const maxY = vh - petSize.h - pad;
+    const offsetX = 16, offsetY = 12;
+
+    target.x = clamp(clientX + offsetX, pad, maxX);
+    target.y = clamp(clientY + offsetY, pad, maxY);
+
+    if (prefersReduced) {
+      pos.x = target.x; pos.y = target.y;
+      apply();
+    }
+  }
+
+  function loop() {
+    // Ease towards target (laggy)
+    pos.x += (target.x - pos.x) * EASE;
+    pos.y += (target.y - pos.y) * EASE;
+    apply();
+
+    // Direction: prefer velocity; fallback to vector to target
+    const vx = pos.x - lastX;
+    const dx = target.x - pos.x, dy = target.y - pos.y;
+    const dist = Math.hypot(dx, dy);
+
+    let dir = lastDir;
+    if (Math.abs(vx) > 0.4) dir = vx > 0 ? 'right' : 'left';
+    else dir = dx >= 0 ? 'right' : 'left';
+
+    // Choose run set by direction
+    const desiredRun = dir === 'right' ? runR : runL;
+
+    if (dist > RUN_DISTANCE && currentSet !== desiredRun) {
+      startAscii(desiredRun, 120);
+    } else if (dist < IDLE_DISTANCE && currentSet !== idle) {
+      startAscii(idle, 500);
+    }
+
+    lastDir = dir;
+    lastX = pos.x;
+
+    rafId = requestAnimationFrame(loop);
+  }
+
+  // hide/show inline controls while free for immersion
+  const hideInlineControls = (hide) => {
+    btnPet.style.display = hide ? 'none' : '';
+    if (inlineToggle) inlineToggle.style.display = hide ? 'none' : '';
+  };
+
+  function enableFree() {
+    if (active) return;
+    active = true;
+
+    petWrap.style.animation = 'none'; // JS controls transform
+    petSize = { w: petWrap.offsetWidth, h: petWrap.offsetHeight };
+    setHome();
+    petWrap.classList.add('pet-free');
+    hideInlineControls(true);
+
+    pos.x = homeRect.left; pos.y = homeRect.top;
+    target.x = pos.x; target.y = pos.y;
+    lastX = pos.x;
+    apply();
+
+    const mouseMove = (e) => onMove(e.clientX, e.clientY);
+    const touchMove = (e) => { if (e.touches?.[0]) onMove(e.touches[0].clientX, e.touches[0].clientY); };
+    const keyHandler = (e) => { if (e.key === 'Escape') disableFree(); };
+    const resizeHandler = () => { setHome(); };
+
+    document.addEventListener('mousemove', mouseMove);
+    document.addEventListener('touchmove', touchMove, { passive: true });
+    document.addEventListener('keydown', keyHandler);
+    window.addEventListener('resize', resizeHandler);
+
+    petWrap._cleanup = () => {
+      document.removeEventListener('mousemove', mouseMove);
+      document.removeEventListener('touchmove', touchMove);
+      document.removeEventListener('keydown', keyHandler);
+      window.removeEventListener('resize', resizeHandler);
+    };
+
+    if (!prefersReduced) rafId = requestAnimationFrame(loop);
+
+    setDockState(true);
+  }
+
+  function disableFree() {
+    if (!active) return;
+    active = false;
+
+    if (petWrap._cleanup) petWrap._cleanup();
+    if (rafId) cancelAnimationFrame(rafId);
+
+    petWrap.classList.remove('pet-free');
+    petWrap.style.transform = '';
+    petWrap.style.animation = '';
+    hideInlineControls(false);
+    startAscii(idle, 500);
+
+    setDockState(false);
+  }
+
+  // ---------- ALWAYS-VISIBLE DOCK BUTTON ----------
+  const dockBtn = (() => {
+    let b = document.getElementById('petDockToggle');
+    if (!b) {
+      b = document.createElement('button');
+      b.id = 'petDockToggle';
+      b.className = 'pet-toggle-fixed';
+      b.type = 'button';
+      document.body.appendChild(b);
+    }
+    return b;
+  })();
+
+  function setDockState(free) {
+    dockBtn.textContent = free ? 'Cage Katniss' : 'Free Katniss';
+    dockBtn.setAttribute('aria-pressed', free ? 'true' : 'false');
+  }
+  setDockState(false);
+
+  dockBtn.addEventListener('click', () => active ? disableFree() : enableFree());
+  inlineToggle?.addEventListener('click', () => active ? disableFree() : enableFree());
 });
+
+
+
+
 
 // ===== Smooth scroll for internal links =====
 document.addEventListener('DOMContentLoaded', () => {
@@ -126,7 +357,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // ===== Footer year =====
 document.addEventListener('DOMContentLoaded', () => {
-  const y = document.getElementById('y'); if (y) y.textContent = new Date().getFullYear();
+  const y = document.getElementById('y'); 
+  if (y) y.textContent = new Date().getFullYear();
 });
 
 // ===== Credentials <details> smooth dropdown =====
@@ -138,7 +370,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnLess = details.querySelector('.show-less');
     if (!box || !summary) return;
 
-    // Initial height (closed)
     if (!details.open) box.style.height = '0px';
 
     const openAnim = () => {
@@ -173,3 +404,21 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 });
+
+// ===== Floating dandelion seeds =====
+(() => {
+  const wrap = document.createElement('div');
+  wrap.className = 'dandelion-bg';
+  document.body.insertBefore(wrap, document.body.firstChild);
+
+  const count = 12; // tweak density
+  for (let i = 0; i < count; i++) {
+    const s = document.createElement('div');
+    s.className = 'dandelion-seed';
+    s.style.setProperty('--x', (Math.random() * 100).toFixed(2) + 'vw');
+    s.style.setProperty('--dx', ((Math.random() * 120) - 60).toFixed(0) + 'px');
+    s.style.setProperty('--dur', (16 + Math.random() * 10).toFixed(1) + 's');
+    s.style.setProperty('--delay', (Math.random() * 20).toFixed(1) + 's');
+    wrap.appendChild(s);
+  }
+})();

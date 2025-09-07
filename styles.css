@@ -226,69 +226,89 @@ input, textarea{
 textarea{ min-height:120px }
 .span-2{ grid-column:1 / span 2 }
 
-/* ASCII pet (box + controls) */
+/* =======================
+   ASCII Pet (compact box)
+======================= */
 .ascii-pet{
-  /* switched to grid so buttons stack nicely */
-  display:grid;
-  grid-template-columns:auto 1fr; /* pet | controls */
-  grid-auto-rows:min-content;
-  column-gap:16px; row-gap:12px;
-  align-items:start;
+  /* layout: pet on left, buttons stacked on right */
+  display: inline-grid;                         /* shrink-wrap to content */
+  grid-template-columns: auto max-content;      /* prevent button column from stretching */
+  grid-auto-rows: min-content;
+  column-gap: 16px;
+  row-gap: 12px;
+  align-items: start;
 
-  margin-top:16px; padding:12px;
-  border-radius:16px;
-  border:1px solid color-mix(in srgb, var(--muted) 25%, transparent);
-  background:color-mix(in srgb, var(--surface) 70%, transparent);
-  box-shadow:0 0 0 3px #fff, var(--shadow);
+  /* visuals */
+  margin-top: 16px;
+  padding: 12px;
+  border-radius: 16px;
+  border: 1px solid color-mix(in srgb, var(--muted) 25%, transparent);
+  background: color-mix(in srgb, var(--surface) 70%, transparent);
+  box-shadow: 0 0 0 3px #fff, var(--shadow);
+
+  /* width control */
+  inline-size: fit-content;                     /* shrink to content */
+  max-inline-size: min(100%, 520px);            /* cap on large screens */
+
+  /* center under hero text — change to 0 if you want left aligned */
+  margin-inline: auto;
 }
 .ascii-pet pre{
-  grid-column:1; grid-row:1 / span 2; /* span both button rows */
-  margin:0; font:700 14px/16px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  grid-column: 1;
+  grid-row: 1 / span 2;                         /* span both button rows */
+  margin: 0;
+  font:700 14px/16px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   letter-spacing:.5px; white-space:pre; color:var(--text);
   text-shadow:0 0 6px color-mix(in srgb, var(--brand) 30%, transparent)
 }
-/* unified button sizing + bold; stack vertically in column 2 */
+/* unify button sizing + bold; stack vertically in column 2 */
 .ascii-pet .pet-say,
 .ascii-pet .pet-toggle,
 .ascii-pet #petToggle{
-  grid-column:2;
-  justify-self:start; align-self:start;
-  padding:10px 14px; line-height:1;
-  font-size:16px; font-weight:800;
-  border-radius:12px;
+  grid-column: 2;
+  justify-self: start;
+  align-self: start;
+  padding: 10px 14px;
+  line-height: 1;
+  font-size: 16px;
+  font-weight: 800;
+  border-radius: 12px;
 }
 /* make inline 'Free' button visually match ghost button */
 .ascii-pet .pet-toggle,
 .ascii-pet #petToggle{
-  display:inline-flex; align-items:center; gap:10px;
-  border:1px solid color-mix(in srgb, var(--muted) 25%, transparent);
-  background:color-mix(in srgb, var(--surface) 70%, transparent);
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid color-mix(in srgb, var(--muted) 25%, transparent);
+  background: color-mix(in srgb, var(--surface) 70%, transparent);
 }
 
 /* Free-roam mode: hide box + inline controls; JS controls position */
 .ascii-pet.pet-free {
-  position:fixed; left:0; top:0; margin:0; z-index:1000;
-  cursor:none; user-select:none; touch-action:none;
-  background:transparent !important; border:0 !important; box-shadow:none !important; padding:0 !important;
-  animation:none !important; /* let JS own transform */
+  position: fixed; left: 0; top: 0; margin: 0; z-index: 1000;
+  cursor: none; user-select: none; touch-action: none;
+  background: transparent !important; border: 0 !important; box-shadow: none !important; padding: 0 !important;
+  animation: none !important; /* let JS own transform */
 }
-.ascii-pet.pet-free pre { pointer-events:none; }
+.ascii-pet.pet-free pre { pointer-events: none; }
 .ascii-pet.pet-free .pet-say,
 .ascii-pet.pet-free #petToggle,
-.ascii-pet.pet-free .pet-toggle { display:none !important; }
+.ascii-pet.pet-free .pet-toggle { display: none !important; }
 
 /* Always-visible dock button (to re-cage/free) */
 .pet-toggle-fixed{
-  position:fixed; right:16px; bottom:16px; z-index:1100;
-  display:inline-flex; align-items:center; gap:8px;
-  padding:10px 14px; border-radius:12px; font-weight:800;
-  border:1px solid color-mix(in srgb, var(--muted) 25%, transparent);
-  background:color-mix(in srgb, var(--surface) 70%, transparent);
+  position: fixed; right: 16px; bottom: 16px; z-index: 1100;
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 10px 14px; border-radius: 12px; font-weight: 800;
+  border: 1px solid color-mix(in srgb, var(--muted) 25%, transparent);
+  background: color-mix(in srgb, var(--surface) 70%, transparent);
 }
 @media (max-width:640px){
   .pet-toggle-fixed{ right:12px; bottom:12px; padding:8px 12px; }
 }
 
+/* Footer */
 footer{ border-top:1px solid color-mix(in srgb, var(--muted) 25%, transparent); padding:24px 0 56px; color:var(--muted) }
 .foot{ display:flex; justify-content:space-between; align-items:center }
 .top{ text-decoration:none }
@@ -357,6 +377,11 @@ footer{ border-top:1px solid color-mix(in srgb, var(--muted) 25%, transparent); 
   .card{ grid-column: span 12 }
   form .grid{ grid-template-columns:1fr }
   .span-2{ grid-column:auto }
+  .ascii-pet{
+    display: grid;             /* allow full width on tiny screens if needed */
+    inline-size: 100%;
+    max-inline-size: 100%;
+  }
   .ascii-pet pre{ font-size:12px; line-height:14px }
   .about-skills .pills { grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 12px; }
   .icon-frame { width: 76px; }

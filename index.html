@@ -10,9 +10,11 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css" />
+
+    <!-- External CSS -->
+    <link rel="stylesheet" href="styles.css">
   </head>
-  <body class="scroll-site"><!-- NEW: flag to enable scroll-mode styles -->
+  <body class="scroll-site">
 
     <header class="nav tabs" role="navigation" aria-label="Primary">
       <div class="container nav-inner">
@@ -33,7 +35,7 @@
     <div class="bg-grid" aria-hidden="true"></div>
     <div class="bg-sparkles" aria-hidden="true"></div>
 
-    <!-- SECTION 1: Landing (unchanged) -->
+    <!-- SECTION 1: Landing -->
     <main id="home" class="section is-active" role="tabpanel" aria-labelledby="tab-home">
       <div class="container hero-grid">
         <div class="hero-copy">
@@ -71,66 +73,65 @@
     </main>
 
     <!-- SECTION 2: About -->
-    <section id="about" class="section" role="region" aria-labelledby="tab-about">
-      <div class="container">
-        <header class="section-head">
-          <h2>Who Me?</h2>
-          <p class="meta">Dan's Lore • Qualifications • Skills</p>
-        </header>
+<section id="about" class="section" role="region" aria-labelledby="tab-about">
+  <div class="container">
+    <header class="section-head">
+      <h2>Who Me?</h2>
+      <p class="meta">Dan's Lore • Qualifications • Skills</p>
+    </header>
 
-        <div class="about-grid" style="margin-top: 16px;">
-          <article class="about-card" aria-label="Bio">
-            <h2>Lore</h2>
-            <p>
-              I've known since I was a wee lad that I wanted to make video games, 
-              I fell in love with the art form that is video game design. 
-            </p>
-            <p>
-              The combination of immersion and storytelling makes us feel intertwined with the very 
-              characters we play.  
-            </p>
-            <p>
-              I aspire to inspire others through the art that is video games.
-            </p>
-          </article>
+    <div class="about-grid">
+      <!-- Lore -->
+      <article class="about-card" aria-label="Bio">
+        <h2>Lore</h2>
+        <p>
+          I've known since I was a wee lad that I wanted to make video games, 
+          I fell in love with the art form that is video game design. 
+        </p>
+        <p>
+          The combination of immersion and storytelling makes us feel intertwined 
+          with the very characters we play.
+        </p>
+        <p>
+          I aspire to inspire others through the art that is video games.
+        </p>
+      </article>
 
-          <article class="about-card" aria-label="What I do">
-            <h2>Qualifications</h2>
-            
-            <ul>
+      <!-- Qualifications -->
+      <article class="about-card" aria-label="Qualifications">
+        <h2>Qualifications</h2>
+        <ul class="bullets">
+          <li>BCIS in Video Game Design and Development</li>
+          <li>Higher Certificate in Mobile Application and Web Design</li>
+          <li>BCIW Advanced HTML5 and CSS3 Specialist</li>
+        </ul>
+      </article>
 
-              <br>
-              <li>BCIS in Video Game Design and Development</li>
-              <br>
-              <li>Higher Certifiacte in Mobile Application and Web Design</li>
-              <br>
-              <li>BCIW Advanced HTML5 and CSS3 Specialist</li>
-              
-            </ul>
-          </article>
-
-          <article class="about-card" aria-label="Skills">
-            <h3>Languages</h3>
-            <div class="pills" style="flex-wrap:wrap">
-              <!-- Use your own SVGs in /assets/skills if you like -->
-              <span><img class="skill-ico" src="https://dandee057.github.io/Website/assets/skills/CsharpLogo.png" alt="" /> C#</span>
-              <span><img class="skill-ico" src="https://dandee057.github.io/Website/assets/skills/KotlinLogo.png" alt="" /> Kotlin</span>
-              <span><img class="skill-ico" src="https://dandee057.github.io/Website/assets/skills/HTML5Logo.png" alt="" /> HTML5</span>
-              <span><img class="skill-ico" src="https://dandee057.github.io/Website/assets/skills/CSS3Logo.png" alt="" /> CSS3</span>
-              <span><img class="skill-ico" src="https://dandee057.github.io/Website/assets/skills/JavaScriptLogo.png" alt="" /> JavaScript</span>
-            </div>
-            <h3>Software</h3>
-           <div class="pills" style="flex-wrap:wrap">
-              <!-- Use your own SVGs in /assets/skills if you like -->
-              <span><img class="skill-ico" src="https://dandee057.github.io/Website/assets/skills/UnityLogo.png" alt="" /> Unity</span>
-              <span><img class="skill-ico" src="https://dandee057.github.io/Website/assets/skills/UE5Logo.png" alt="" /> Unreal (UE5)</span>
-              <span><img class="skill-ico" src="https://dandee057.github.io/Website/assets/skills/BlenderLogo.png" alt="" /> Blender</span>
-              <span><img class="skill-ico" src="https://dandee057.github.io/Website/assets/skills/GitLogo.png" alt="" /> Git</span>
-            </div>
-          </article>
+      <!-- Skills -->
+      <article class="about-card about-skills" aria-label="Skills">
+        <h3>Languages</h3>
+        <div class="pills">
+          <span><img class="skill-ico" src="assets/skills/CsharpLogo.png" alt="" /> C#</span>
+          <span><img class="skill-ico" src="assets/skills/KotlinLogo.png" alt="" /> Kotlin</span>
+          <span><img class="skill-ico" src="assets/skills/HTML5Logo.png" alt="" /> HTML5</span>
+          <span><img class="skill-ico" src="assets/skills/CSS3Logo.png" alt="" /> CSS3</span>
+          <span><img class="skill-ico" src="assets/skills/JavaScriptLogo.png" alt="" /> JavaScript</span>
         </div>
-      </div>
-    </section>
+
+        <h3>Software</h3>
+        <div class="pills">
+          <span><img class="skill-ico" src="assets/skills/UnityLogo.png" alt="" /> Unity</span>
+          <span><img class="skill-ico" src="assets/skills/UE5Logo.png" alt="" /> Unreal (UE5)</span>
+          <span><img class="skill-ico" src="assets/skills/BlenderLogo.png" alt="" /> Blender</span>
+          <span><img class="skill-ico" src="assets/skills/GitLogo.png" alt="" /> Git</span>
+          <span><img class="skill-ico" src="assets/skills/ASLogo.png" alt="" /> Android Studio</span>
+
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
 
     <!-- SECTION 3: Projects -->
     <section id="projects" class="section" role="region" aria-labelledby="tab-projects">
@@ -227,109 +228,108 @@
       </div>
     </section>
 
-    <!-- Your original ASCII pet script (untouched) -->
+    <!-- ===== SCRIPTS (complete) ===== -->
     <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const pre = document.querySelector('.ascii-pet pre');
-      const btn = document.querySelector('.pet-say');
-      if (!pre || !btn) return;
-      btn.textContent = 'Pet';
+      // ASCII Pet
+      document.addEventListener('DOMContentLoaded', () => {
+        const pre = document.querySelector('.ascii-pet pre');
+        const btn = document.querySelector('.pet-say');
+        if (!pre || !btn) return;
+        btn.textContent = 'Pet';
 
-      const normal = [
+        const normal = [
 String.raw`  
 
-   /\_/\ 
+   /\\_/\\ 
   ( •ᴥ• )/
   (  ^  )
    | | |`,
 String.raw`  
 
-   /\_/\ 
- \( •ᴥ• ) 
+   /\\_/\\ 
+ \\( •ᴥ• ) 
   (  ^  )
    | | |`,
 String.raw`  
 
-   /\_/\ 
+   /\\_/\\ 
   ( -ᴥ- )/
   (  ^  )
    | | |`,
 String.raw`  
 
-   /\_/\ 
- \( •ᴥ• ) 
+   /\\_/\\ 
+ \\( •ᴥ• ) 
   (  ^  )
    | | |`
-      ];
+        ];
 
-      const hearts = [
+        const hearts = [
 String.raw`  
     ♥
-   /\_/\ 
+   /\\_/\\ 
   ( ^ᴥ^ )/
   (  ^  )
    | | |`,
 String.raw`  
     ♥♥
-   /\_/\ 
+   /\\_/\\ 
   ( ^ᴥ^ )/
   (  ^  )
    | | |`,
 String.raw`  
     ♥♥♥
-   /\_/\ 
+   /\\_/\\ 
   ( ^ᴥ^ )/
   (  ^  )
    | | |`
-      ];
+        ];
 
-      const mql = window.matchMedia('(prefers-reduced-motion: reduce)');
-      let i = 0, loop = null, playingHearts = false;
+        const mql = window.matchMedia('(prefers-reduced-motion: reduce)');
+        let i = 0, loop = null, playingHearts = false;
 
-      const draw = (frame) => { pre.textContent = frame; };
-      const stopLoop = () => { if (loop) { clearInterval(loop); loop = null; } };
-      const startLoop = () => {
-        stopLoop();
-        if (mql.matches) { i = 0; return draw(normal[0]); }
-        loop = setInterval(() => { i = (i + 1) % normal.length; draw(normal[i]); }, 500);
-      };
+        const draw = (frame) => { pre.textContent = frame; };
+        const stopLoop = () => { if (loop) { clearInterval(loop); loop = null; } };
+        const startLoop = () => {
+          stopLoop();
+          if (mql.matches) { i = 0; return draw(normal[0]); }
+          loop = setInterval(() => { i = (i + 1) % normal.length; draw(normal[i]); }, 500);
+        };
 
-      draw(normal[0]); startLoop();
-      mql.addEventListener?.('change', startLoop);
+        draw(normal[0]);
+        startLoop();
+        mql.addEventListener?.('change', startLoop);
 
-      btn.addEventListener('click', () => {
-        if (playingHearts) return;
-        playingHearts = true;
-        stopLoop();
+        btn.addEventListener('click', () => {
+          if (playingHearts) return;
+          playingHearts = true;
+          stopLoop();
 
-        if (mql.matches) {
-          draw(hearts[1]);
-          setTimeout(() => { draw(normal[0]); playingHearts = false; }, 700);
-          return;
-        }
-
-        let h = 0;
-        draw(hearts[h++]); 
-        const temp = setInterval(() => {
-          if (h >= hearts.length) {
-            clearInterval(temp);
-            playingHearts = false;
-            i = 0;
-            draw(normal[0]);
-            startLoop();
-          } else {
-            draw(hearts[h++]);
+          if (mql.matches) {
+            draw(hearts[1]);
+            setTimeout(() => { draw(normal[0]); playingHearts = false; }, 700);
+            return;
           }
-        }, 220);
-      });
-    });
-    </script>
 
-    <!-- NEW: tiny scroll + active-link script (doesn't touch your ASCII) -->
-    <script>
+          let h = 0;
+          draw(hearts[h++]);
+          const temp = setInterval(() => {
+            if (h >= hearts.length) {
+              clearInterval(temp);
+              playingHearts = false;
+              i = 0;
+              draw(normal[0]);
+              startLoop();
+            } else {
+              draw(hearts[h++]);
+            }
+          }, 220);
+        });
+      });
+
       // Smooth scroll for internal links
-      document.querySelectorAll('a[href^="#"]').forEach(a=>{
-        a.addEventListener('click', (e)=>{
+      document.querySelectorAll('a[href^="#"]').forEach(a => {
+        a.addEventListener('click', (e) => {
           const id = a.getAttribute('href');
           const el = document.querySelector(id);
           if (el) {
@@ -342,21 +342,63 @@ String.raw`
 
       // Scroll-spy: set active tab by section in view
       const tabs = document.querySelectorAll('.tabbar .tab');
-      const setActive = (id)=>{
-        tabs.forEach(t=> t.classList.toggle('is-active', t.getAttribute('href') === `#${id}`));
+      const setActive = (id) => {
+        tabs.forEach(t => t.classList.toggle('is-active', t.getAttribute('href') === `#${id}`));
       };
-      const io = new IntersectionObserver((entries)=>{
-        entries.forEach(entry=>{
-          if (entry.isIntersecting){
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
             setActive(entry.target.id);
           }
         });
       }, { rootMargin: "-40% 0px -50% 0px", threshold: 0.01 });
-
-      document.querySelectorAll('section.section, main.section').forEach(s=> io.observe(s));
+      document.querySelectorAll('section.section, main.section').forEach(s => io.observe(s));
 
       // Footer year
       const y = document.getElementById('y'); if (y) y.textContent = new Date().getFullYear();
+
+      // About tabs (click + keyboard nav + deep-link)
+      (function(){
+        const tabs = [...document.querySelectorAll('.about-tab')];
+        if (!tabs.length) return;
+
+        const select = (id) => {
+          tabs.forEach(t => {
+            const on = t.id === `about-tab-${id}`;
+            t.classList.toggle('is-selected', on);
+            t.setAttribute('aria-selected', on ? 'true' : 'false');
+            const panel = document.getElementById(`about-${id}`);
+            if (panel) {
+              panel.toggleAttribute('hidden', !on);
+              panel.classList.toggle('is-active', on);
+            }
+          });
+        };
+
+        tabs.forEach(btn => {
+          btn.addEventListener('click', () => {
+            const id = btn.id.replace('about-tab-', '');
+            select(id);
+          });
+          btn.addEventListener('keydown', (e) => {
+            const i = tabs.indexOf(btn);
+            if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+              e.preventDefault(); const n = tabs[(i + 1) % tabs.length]; n.focus(); n.click();
+            } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+              e.preventDefault(); const p = tabs[(i - 1 + tabs.length) % tabs.length]; p.focus(); p.click();
+            } else if (e.key === 'Home') { e.preventDefault(); tabs[0].focus(); tabs[0].click(); }
+            else if (e.key === 'End') { e.preventDefault(); tabs.at(-1).focus(); tabs.at(-1).click(); }
+          });
+        });
+
+        // optional deep-link: #about?tab=skills
+        const hash = window.location.hash;
+        if (hash.startsWith('#about')) {
+          const q = new URLSearchParams(hash.split('?')[1]);
+          const tab = q.get('tab');
+          if (tab && document.getElementById(`about-${tab}`)) select(tab);
+        }
+      })();
     </script>
   </body>
 </html>

@@ -394,9 +394,11 @@ function loop() {
 
 
 
-// ===== Smooth scroll for internal links =====
+// ===== Smooth scroll ONLY for section/nav links, not lightbox controls =====
 document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('a[href^="#"]').forEach(a => {
+  document.querySelectorAll(
+    'a[href^="#"]:not(.g-thumb):not(.lb-prev):not(.lb-next):not(.lb-close)'
+  ).forEach(a => {
     a.addEventListener('click', (e) => {
       const id = a.getAttribute('href');
       const el = document.querySelector(id);
@@ -408,6 +410,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 });
+
 
 // ===== Scroll-spy: set active tab by section in view =====
 document.addEventListener('DOMContentLoaded', () => {

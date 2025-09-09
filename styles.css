@@ -1,7 +1,3 @@
-/* =======================
-  styles.css (Daniel Dennison – Portfolio)
-  Palette preserved; quirky retro UI.
-======================= */
 :root {
   --bg:#0b1016; --surface:#111826; --text:#e6edf3; --muted:#9db2c6;
   --brand:#6ee7ff; --brand-2:#a78bfa;
@@ -100,6 +96,15 @@ h1{ font-size:clamp(28px, 4vw, 46px); line-height:1.15; margin:.35em 0 .5em }
   color:inherit; transition: transform .15s ease;
 }
 .card:hover{ transform: translateY(-4px) }
+.card > img{
+  width:100%;
+  height:clamp(140px, 22vw, 220px);
+  object-fit:cover;
+  aspect-ratio:auto;
+  background:#000;
+  display:block;
+}
+
 .card img{
   width:100%;
   height:clamp(140px, 22vw, 220px);
@@ -230,38 +235,30 @@ textarea{ min-height:120px }
    ASCII Pet (compact box)
 ======================= */
 .ascii-pet{
-  /* layout: pet on left, buttons stacked on right */
-  display: inline-grid;                         /* shrink-wrap to content */
-  grid-template-columns: auto max-content;      /* prevent button column from stretching */
+  display: inline-grid;
+  grid-template-columns: auto max-content;
   grid-auto-rows: min-content;
   column-gap: 16px;
   row-gap: 12px;
   align-items: start;
-
-  /* visuals */
   margin-top: 16px;
   padding: 12px;
   border-radius: 16px;
   border: 1px solid color-mix(in srgb, var(--muted) 25%, transparent);
   background: color-mix(in srgb, var(--surface) 70%, transparent);
   box-shadow: 0 0 0 3px #fff, var(--shadow);
-
-  /* width control */
-  inline-size: fit-content;                     /* shrink to content */
-  max-inline-size: min(100%, 520px);            /* cap on large screens */
-
-  /* center under hero text — change to 0 if you want left aligned */
+  inline-size: fit-content;
+  max-inline-size: min(100%, 520px);
   margin-inline: auto;
 }
 .ascii-pet pre{
   grid-column: 1;
-  grid-row: 1 / span 2;                         /* span both button rows */
+  grid-row: 1 / span 2;
   margin: 0;
   font:700 14px/16px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   letter-spacing:.5px; white-space:pre; color:var(--text);
   text-shadow:0 0 6px color-mix(in srgb, var(--brand) 30%, transparent)
 }
-/* unify button sizing + bold; stack vertically in column 2 */
 .ascii-pet .pet-say,
 .ascii-pet .pet-toggle,
 .ascii-pet #petToggle{
@@ -274,7 +271,6 @@ textarea{ min-height:120px }
   font-weight: 800;
   border-radius: 12px;
 }
-/* make inline 'Free' button visually match ghost button */
 .ascii-pet .pet-toggle,
 .ascii-pet #petToggle{
   display: inline-flex;
@@ -284,19 +280,19 @@ textarea{ min-height:120px }
   background: color-mix(in srgb, var(--surface) 70%, transparent);
 }
 
-/* Free-roam mode: hide box + inline controls; JS controls position */
+/* Free-roam mode */
 .ascii-pet.pet-free {
   position: fixed; left: 0; top: 0; margin: 0; z-index: 1000;
   cursor: none; user-select: none; touch-action: none;
   background: transparent !important; border: 0 !important; box-shadow: none !important; padding: 0 !important;
-  animation: none !important; /* let JS own transform */
+  animation: none !important;
 }
 .ascii-pet.pet-free pre { pointer-events: none; }
 .ascii-pet.pet-free .pet-say,
 .ascii-pet.pet-free #petToggle,
 .ascii-pet.pet-free .pet-toggle { display: none !important; }
 
-/* Always-visible dock button (to re-cage/free) */
+/* Dock button */
 .pet-toggle-fixed{
   position: fixed; right: 16px; bottom: 16px; z-index: 1100;
   display: inline-flex; align-items: center; gap: 8px;
@@ -313,7 +309,7 @@ footer{ border-top:1px solid color-mix(in srgb, var(--muted) 25%, transparent); 
 .foot{ display:flex; justify-content:space-between; align-items:center }
 .top{ text-decoration:none }
 
-/* Hero avatar adjustments + white circular frame */
+/* Hero avatar */
 .hero-card{
   display:flex; flex-direction:column; align-items:center; justify-content:center;
   max-width:300px; margin:auto;
@@ -328,16 +324,16 @@ footer{ border-top:1px solid color-mix(in srgb, var(--muted) 25%, transparent); 
   .hero-card img{ width:200px; height:200px; }
 }
 
-/* Floating dandelion seeds background (falling) */
+/* Floating dandelion seeds */
 .dandelion-bg{
-  position:fixed; inset:0; pointer-events:none; overflow:hidden; z-index:0; /* behind content, above bg-grid */
+  position:fixed; inset:0; pointer-events:none; overflow:hidden; z-index:0;
 }
 .dandelion-seed{
   position:absolute;
   width:18px; height:18px;
-  background:url('assets/dandeion.png') no-repeat center/contain; /* use your asset name */
+  background:url('assets/dandeion.png') no-repeat center/contain;
   opacity:.28;
-  top:-10vh; /* start above the viewport */
+  top:-10vh;
   left:var(--x, 0vw);
   animation: fallSeed var(--dur, 18s) linear var(--delay, 0s) infinite;
   will-change: transform, opacity;
@@ -353,7 +349,7 @@ footer{ border-top:1px solid color-mix(in srgb, var(--muted) 25%, transparent); 
   .dandelion-seed{ animation:none; display:none; }
 }
 
-/* ===== Fix: ensure cards/skills heights don't visually “cut” ===== */
+/* ===== Fix: avoid height cuts ===== */
 .about-grid { align-items: start; }
 .about-grid > .about-card { align-self: start; }
 .about-skills h3 { margin: 0 0 10px; }
@@ -378,7 +374,7 @@ footer{ border-top:1px solid color-mix(in srgb, var(--muted) 25%, transparent); 
   form .grid{ grid-template-columns:1fr }
   .span-2{ grid-column:auto }
   .ascii-pet{
-    display: grid;             /* allow full width on tiny screens if needed */
+    display: grid;
     inline-size: 100%;
     max-inline-size: 100%;
   }
@@ -394,7 +390,6 @@ footer{ border-top:1px solid color-mix(in srgb, var(--muted) 25%, transparent); 
   *{ animation:none !important; transition:none !important }
 }
 
-/* Scroll-site overrides */
 .scroll-site .section{
   display:block;
   scroll-margin-top:80px;
@@ -403,3 +398,81 @@ footer{ border-top:1px solid color-mix(in srgb, var(--muted) 25%, transparent); 
 @media (min-width:640px){
   .nav { background: color-mix(in srgb, var(--bg) 90%, transparent); }
 }
+
+.card-body .gallery-title {
+  font-weight: 700;
+  font-size: 14px;
+  text-transform: uppercase;
+  margin: 16px 0 10px;
+  color: var(--muted);
+}
+
+/* In-card gallery (2×2) */
+.card-body .gallery{
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)); /* 2 per row */
+  gap: 14px;
+  margin-top: 12px;
+}
+
+/* Thumbnails */
+.card-body .g-thumb{
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 1 / 1;            /* square tiles */
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,.15);
+  border-radius: 0 !important;    /* no rounded corners */
+  background: rgba(255,255,255,.04);
+  cursor: zoom-in;
+}
+.card-body .g-thumb img{
+  width: 100%; height: 100%; object-fit: cover; display: block;
+  transform: scale(1); transition: transform .25s ease, filter .25s ease;
+}
+.card-body .g-thumb:hover img{ transform: scale(1.08); filter: brightness(1.05); }
+
+/* Optional label */
+.card-body .g-thumb::after{
+  content:"View"; position:absolute; right:8px; bottom:8px;
+  font-size:11px; padding:4px 8px; border-radius:8px;
+  background:rgba(0,0,0,.45); color:#fff;
+  opacity:0; transform:translateY(4px); transition:.2s;
+}
+.card-body .g-thumb:hover::after{ opacity:1; transform:none; }
+
+/* Keep 2×2 even on small screens (change to 1fr if you want 1-per-row on phones) */
+@media (max-width: 620px){
+  .card-body .gallery{ grid-template-columns: repeat(2, minmax(0,1fr)); }
+}
+
+/* Lightbox overlay (unchanged except for small polish) */
+.lightbox {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,.85);
+  display: flex; align-items: center; justify-content: center;
+  padding: 24px; opacity: 0; pointer-events: none;
+  transition: opacity .2s ease;
+  z-index: 999;
+}
+.lightbox:target { opacity: 1; pointer-events: auto; }
+.lightbox figure { margin: 0; max-width: 92vw; max-height: 92vh; }
+.lightbox img { display: block; max-width: 92vw; max-height: 80vh; object-fit: contain; border-radius: 10px; }
+.lightbox figcaption { margin-top: 8px; text-align: center; color: #cbd5e1; font-size: 14px; }
+.lb-close, .lb-prev, .lb-next {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  text-decoration: none; font-weight: 800; line-height: 1;
+  background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.25);
+  padding: 10px 12px; border-radius: 10px; color: #fff;
+  backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
+}
+.lb-prev { left: 18px; }
+.lb-next { right: 18px; }
+.lb-close {
+  top: 18px; right: 18px; transform: none;
+  font-size: 14px; padding: 8px 10px; border-radius: 999px; cursor: pointer;
+}
+.lb-prev:hover, .lb-next:hover, .lb-close:hover { background: rgba(255,255,255,.18); }
+
+
